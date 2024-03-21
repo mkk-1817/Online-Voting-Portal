@@ -1,15 +1,23 @@
 // App.js
-// main
-
 import React from 'react';
-import FrontPage from './FrontPage';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import './App.css';
+import Login from './Login';
+import SignUp from './SignUp';
+import MainApp from './MainApp';
 
-const App = () => {
-    return (
-        <div className="App">
-            <FrontPage />
-        </div>
-    );
-};
+function App() {
+  return (
+    <Router>
+      <div className="container">
+        <Routes>
+          <Route path="/" element={<MainApp />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<SignUp />} />
+        </Routes>
+      </div>
+    </Router>
+  );
+}
 
 export default App;
