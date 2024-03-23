@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import './SignUp.css'; // Import SignUp CSS
 
 const SignUp = () => {
   const [formData, setFormData] = useState({
@@ -20,9 +21,14 @@ const SignUp = () => {
 
   const handleEmailVerify = async () => {
     try {
-      await axios.post('http://localhost:5000/sendotp', { email: formData.email });
-      setEmailVerificationSent(true);
-      setVerificationStatus('');
+      console.log('Email to be verified:', formData.email); // Log the email input
+      const response = await axios.post('http://localhost:3001/sendotp', { email: formData.email });
+      if (response.status === 200) {
+        setVerificationStatus('');
+        setEmailVerificationSent(true);
+      } else {
+        throw new Error('Failed to send OTP');
+      }
     } catch (error) {
       console.error(error);
       setVerificationStatus('Failed to send OTP. Please try again.');
@@ -31,8 +37,12 @@ const SignUp = () => {
 
   const handleVerifyOTP = async () => {
     try {
-      const response = await axios.post('http://localhost:5000/verifyotp', { otp, enteredOTP: otp });
-      setVerificationStatus(response.data.message);
+      const response = await axios.post('http://localhost:3001/verifyotp', { otp: otp });
+      if (response.status === 200) {
+        setVerificationStatus(response.data.message);
+      } else {
+        throw new Error('Invalid OTP');
+      }
     } catch (error) {
       console.error(error);
       setVerificationStatus('Invalid OTP. Please try again.');
@@ -46,18 +56,18 @@ const SignUp = () => {
       return;
     }
 
-    // Your signup logic here
-    // This is where you would send the form data to your backend for user registration
-    // Example:
-    // try {
-    //   await axios.post('/signup', formData);
-    //   alert('User signed up successfully!');
-    // } catch (error) {
-    //   console.error(error);
-    //   alert('Signup failed. Please try again.');
-    // }
+    try {
+      const response = await axios.post('http://localhost:3001/signup', formData);
+      if (response.status === 200) {
+        alert('User signed up successfully!');
+      } else {
+        throw new Error('Signup failed');
+      }
+    } catch (error) {
+      console.error(error);
+      alert('Signup failed. Please try again.');
+    }
 
-    // For demonstration purposes, just log the form data
     console.log('Form Data:', formData);
   };
 
@@ -77,7 +87,7 @@ const SignUp = () => {
         {emailVerificationSent && (
           <div className="otp-container">
             <input type="text" placeholder="Enter OTP" value={otp} onChange={(e) => setOTP(e.target.value)} />
-            <button type="button" onClick={handleVerifyOTP}>Submit</button>
+            <button type="button" onClick={handleVerifyOTP}>Verify OTP</button>
           </div>
         )}
         <label htmlFor="mobile">Mobile Number:</label>
@@ -89,7 +99,7 @@ const SignUp = () => {
         <button type="submit">Sign Up</button>
       </form>
       <p className="link-text">Already a user? <Link to="/login">Login</Link></p>
-      {verificationStatus && <p>{verificationStatus}</p>}
+      {verificationStatus && <p className="verification-message">{verificationStatus}</p>}
     </div>
   );
 };

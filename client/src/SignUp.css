@@ -1,8 +1,11 @@
 /* SignUp.css */
+
+/* Input field container with verification button */
 .input-with-button {
   position: relative;
 }
 
+/* Verification button style */
 .input-with-button .verify-button {
   position: absolute;
   right: 5px;
@@ -16,28 +19,33 @@
   border-radius: 4px;
 }
 
+/* Disabled state for verification button */
 .input-with-button .verify-button:disabled {
   background-color: #ccc;
   cursor: not-allowed;
 }
 
+/* Input field style */
 .input-with-button input[type="email"],
 .input-with-button input[type="text"] {
   padding-right: 30px; /* Adjust the padding to accommodate the button */
   width: calc(100% - 40px);
 }
 
+/* OTP container style */
 .otp-container {
   display: flex;
   align-items: center;
   margin-top: 5px;
 }
 
+/* OTP input field style */
 .otp-container input[type="text"] {
   flex: 1;
   margin-right: 10px;
 }
 
+/* OTP submit button style */
 .otp-container button {
   padding: 5px 10px;
   background-color: #007bff;
@@ -47,6 +55,7 @@
   cursor: pointer;
 }
 
+/* Hover state for OTP submit button */
 .otp-container button:hover {
   background-color: #0056b3;
 }
