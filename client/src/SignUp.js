@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-import './SignUp.css'; // Import SignUp CSS
+import './SignUp.css'; 
 
 const SignUp = () => {
   const [formData, setFormData] = useState({
@@ -57,7 +57,7 @@ const SignUp = () => {
     }
 
     try {
-      const response = await axios.post('http://localhost:3001/signup', formData);
+      const response = await axios.post('http://localhost:3000/signup', formData);
       if (response.status === 200) {
         alert('User signed up successfully!');
       } else {
