@@ -22,7 +22,7 @@ const transporter = nodemailer.createTransport({
   }
 });
 
-// Route to send OTP to the provided email
+/// Route to send OTP to the provided email
 app.post('/sendotp', async (req, res) => {
   const { email } = req.body;
   const otp = Math.floor(100000 + Math.random() * 900000); // Generate 6-digit OTP
@@ -65,6 +65,19 @@ app.post('/verifyotp', (req, res) => {
   } catch (error) {
     console.error('Error verifying OTP: ', error);
     res.status(500).send('Failed to verify OTP');
+  }
+});
+
+
+// Route to verify OTP
+app.post('/verifyotp', (req, res) => {
+  const { email, enteredOTP } = req.body;
+  // In a real-world scenario, you'd retrieve the stored OTP for the user
+  const storedOTP = otpStore.get(email);
+  if (storedOTP && storedOTP === enteredOTP) {
+    res.status(200).send({ message: 'OTP verification successful' });
+  } else {
+    res.status(400).send({ error: 'Invalid OTP' });
   }
 });
 

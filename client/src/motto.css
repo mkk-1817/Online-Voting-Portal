@@ -1,0 +1,64 @@
+/* Reset CSS */
+.motto.css-* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'poppins', sans-serif;
+}
+
+/* Body Styling */
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: url('front.jpg') no-repeat;
+    background-size: cover;
+    background-position: center;
+}
+
+/* Wrapper Styling */
+.wrapper3 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column; /* Added to align items vertically */
+    position: relative;
+    width: 500px;
+    height: 200px;
+    background: transparent;
+    border: 2px solid rgba(255, 255, 255, .5);
+    border-radius: 20px;
+    backdrop-filter: blur(20px);
+    box-shadow: 0 0 30px rgba(0, 0, 0, 5);
+    overflow: hidden;
+}
+
+/* Close Icon Styling */
+.wrapper3 .icon-close {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 45px;
+    height: 45px;
+    background: #a8c021;
+    font-size: 2em;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-bottom-left-radius: 20px;
+    cursor: pointer;
+    z-index: 1; /* Updated from Z-index */
+}
+
+/* Form Box Styling */
+.form-box1 {
+    text-align: center; /* Center-align text */
+    padding: 20px; /* Adjust padding as needed */
+}
+
+.form-box1 h2 {
+    font-size: 2em;
+    color: #162938;
+}
