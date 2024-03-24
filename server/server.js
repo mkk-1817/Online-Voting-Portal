@@ -1,24 +1,32 @@
-const { MongoClient } = require('mongodb');
 const express = require('express');
 const bodyParser = require('body-parser');
-<<<<<<< HEAD
-=======
-const randomstring = require('randomstring');
->>>>>>> f6de33f53dcf7750f382b8eb22310ee95bf816c1
 const cors = require('cors');
 const nodemailer = require('nodemailer');
+const { MongoClient } = require('mongodb');
+const mongoose = require('mongoose');
 
 const app = express();
 const PORT = 3001;
 
 app.use(bodyParser.json());
 app.use(cors());
+const uri = 'mongodb+srv://karthikkrishna230104:be_alone@cluster0.eg6w25h.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0';
 
 // In-memory storage for email verification and OTP
 const emailVerificationStore = new Map();
 const otpStore = new Map();
+// MongoDB client
+const client = new MongoClient(uri);
 
-// Create a Nodemailer transporter
+// Connect to MongoDB
+async function connectToMongoDB() {
+  try {
+    await client.connect();
+    console.log("Connected to MongoDB");
+  } catch (err) {
+    console.error("Error connecting to MongoDB:", err);
+  }
+}
 const transporter = nodemailer.createTransport({
   service: 'Gmail', // Assuming you're using Gmail. You can use any other SMTP service here.
   auth: {
@@ -27,11 +35,7 @@ const transporter = nodemailer.createTransport({
   }
 });
 
-<<<<<<< HEAD
 // Route to send OTP to the provided email
-=======
-/// Route to send OTP to the provided email
->>>>>>> f6de33f53dcf7750f382b8eb22310ee95bf816c1
 app.post('/sendotp', async (req, res) => {
   const { email } = req.body;
   const otp = Math.floor(100000 + Math.random() * 900000); // Generate 6-digit OTP
@@ -45,11 +49,7 @@ app.post('/sendotp', async (req, res) => {
       from: '71762133044@cit.edu.in',
       to: email,
       subject: 'OTP Verification',
-<<<<<<< HEAD
       text: `Your OTP for verification is: ${otp}`
-=======
-      text: Your OTP for verification is: ${otp}
->>>>>>> f6de33f53dcf7750f382b8eb22310ee95bf816c1
     });
 
     console.log('Email sent: ', info.response);
@@ -81,33 +81,6 @@ app.post('/verifyotp', (req, res) => {
   }
 });
 
-<<<<<<< HEAD
-// Route for user signup
-app.post('/signup', (req, res) => {
-  const { username, email, mobile, password, voterId } = req.body;
-  // In a real-world scenario, you'd perform validation and store user data in a database
-  console.log(`User signed up - Username: ${username}, Email: ${email}`);
-  res.status(200).send('User signed up successfully');
-=======
-
-// Route to verify OTP
-app.post('/verifyotp', (req, res) => {
-  const { email, enteredOTP } = req.body;
-  // In a real-world scenario, you'd retrieve the stored OTP for the user
-  const storedOTP = otpStore.get(email);
-  if (storedOTP && storedOTP === enteredOTP) {
-    res.status(200).send({ message: 'OTP verification successful' });
-  } else {
-    res.status(400).send({ error: 'Invalid OTP' });
-  }
->>>>>>> f6de33f53dcf7750f382b8eb22310ee95bf816c1
-});
-
-
-const uri = 'mongodb+srv://karthikkrishna230104:be_alone@cluster0.eg6w25h.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0';
-
-// Create a new MongoClient
-const client = new MongoClient(uri);
 
 async function main() {
     try {
@@ -127,7 +100,29 @@ async function main() {
             await collection.insertOne(userData);
             console.log("User data inserted into the database");
         }
-
+        async function addVoteDetails(voterId, partyId) {
+          try {
+            const dbName = 'Voting_portal';
+            const collectionName = 'VoteDetails';
+            const collection = client.db(dbName).collection(collectionName);
+            await collection.insertOne({ voterId, partyId });
+            console.log("Vote details added to the database");
+          } catch (error) {
+            console.error('Error adding vote details:', error);
+          }
+        }
+        
+        // Route to handle vote submission
+        app.post('/submitvote', async (req, res) => {
+          try {
+            const { voterId, partyId } = req.body;
+            await addVoteDetails(voterId, partyId);
+            res.status(200).json({ message: 'Vote submitted successfully' });
+          } catch (error) {
+            console.error('Error submitting vote:', error);
+            res.status(500).json({ message: 'Failed to submit vote' });
+          }
+        });
         // Define the '/signup' endpoint
         app.post('/signup', async (req, res) => {
             try {
@@ -144,13 +139,12 @@ async function main() {
     } catch (err) {
         console.error("Error occurred:", err);
     }
+    
 }
 
 main();
+
 app.listen(PORT, () => {
-<<<<<<< HEAD
   console.log(`Server is running on http://localhost:${PORT}`);
-=======
-  console.log(Server is running on http://localhost:${PORT});
->>>>>>> f6de33f53dcf7750f382b8eb22310ee95bf816c1
+  connectToMongoDB();
 });
