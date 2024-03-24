@@ -1,7 +1,9 @@
+const { MongoClient } = require('mongodb');
 const express = require('express');
-const bodyParser = require('body-parser');
-const cors = require('cors');
 const nodemailer = require('nodemailer');
+const bodyParser = require('body-parser');
+const randomstring = require('randomstring');
+const cors = require('cors');
 
 const app = express();
 const PORT = 3001;
@@ -36,7 +38,7 @@ app.post('/sendotp', async (req, res) => {
       from: '71762133044@cit.edu.in',
       to: email,
       subject: 'OTP Verification',
-      text: `Your OTP for verification is: ${otp}`
+      text: Your OTP for verification is: ${otp}
     });
 
     console.log('Email sent: ', info.response);
@@ -81,14 +83,50 @@ app.post('/verifyotp', (req, res) => {
   }
 });
 
-// Route for user signup
-app.post('/signup', (req, res) => {
-  const { username, email, mobile, password, voterId } = req.body;
-  // In a real-world scenario, you'd perform validation and store user data in a database
-  console.log(`User signed up - Username: ${username}, Email: ${email}`);
-  res.status(200).send('User signed up successfully');
-});
 
+const uri = 'mongodb+srv://karthikkrishna230104:be_alone@cluster0.eg6w25h.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0';
+
+// Create a new MongoClient
+const client = new MongoClient(uri);
+
+async function main() {
+    try {
+        // Connect to the MongoDB cluster
+        await client.connect();
+        console.log("Connected to MongoDB");
+
+        // Database and collection name
+        const dbName = 'Voting_portal';
+        const collectionName = 'Users';
+
+        // Access your collection
+        const collection = client.db(dbName).collection(collectionName);
+
+        // Define a function to insert user data into the collection
+        async function addUser(userData) {
+            await collection.insertOne(userData);
+            console.log("User data inserted into the database");
+        }
+
+        // Define the '/signup' endpoint
+        app.post('/signup', async (req, res) => {
+            try {
+                const userData = req.body;
+                // Call the function to insert user data into the collection
+                await addUser(userData);
+                res.status(200).json({ message: 'User signed up successfully' });
+            } catch (error) {
+                console.error('Error signing up user:', error);
+                res.status(500).json({ message: 'Failed to sign up user' });
+            }
+        });
+
+    } catch (err) {
+        console.error("Error occurred:", err);
+    }
+}
+
+main();
 app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
+  console.log(Server is running on http://localhost:${PORT});
 });
