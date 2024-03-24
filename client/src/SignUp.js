@@ -9,13 +9,11 @@ const SignUp = () => {
     email: '',
     mobile: '',
     password: '',
-    confirmPassword: '',
-    voterId: ''
+    confirmPassword: ''
   });
   const [emailVerificationSent, setEmailVerificationSent] = useState(false);
   const [otp, setOTP] = useState('');
   const [verificationStatus, setVerificationStatus] = useState('');
-  const [passwordConstraints, setPasswordConstraints] = useState('');
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -39,8 +37,8 @@ const SignUp = () => {
 
   const handleVerifyOTP = async () => {
     try {
-      console.log('Entered OTP:', otp);
-      const response = await axios.post('http://localhost:3001/verifyotp', { enteredOTP: otp });
+      console.log('OTP to be verified:', otp);
+      const response = await axios.post('http://localhost:3001/verifyotp', { otp, enteredOTP: otp });
       if (response.status === 200) {
         setVerificationStatus(response.data.message);
       } else {
@@ -72,23 +70,6 @@ const SignUp = () => {
     }
   };
 
-  const handlePasswordChange = (e) => {
-    const password = e.target.value;
-    // Password constraints
-    const constraints = [];
-    if (password.length < 8) {
-      constraints.push('Password must be at least 8 characters long.');
-    }
-    if (!/\d/.test(password)) {
-      constraints.push('Password must contain at least one digit.');
-    }
-    if (!/[!@#$%^&*]/.test(password)) {
-      constraints.push('Password must contain at least one special character.');
-    }
-    setPasswordConstraints(constraints.join(' '));
-    setFormData({ ...formData, password });
-  };
-
   return (
     <div className="form-container">
       <h2>Sign Up</h2>
@@ -111,11 +92,10 @@ const SignUp = () => {
         <label htmlFor="mobile">Mobile Number:</label>
         <input type="text" id="mobile" name="mobile" value={formData.mobile} onChange={handleChange} required />
         <label htmlFor="password">Password:</label>
-        <input type="password" id="password" name="password" value={formData.password} onChange={handlePasswordChange} required />
-        {passwordConstraints && <p className="password-constraints">{passwordConstraints}</p>}
+        <input type="password" id="password" name="password" value={formData.password} onChange={handleChange} required />
         <label htmlFor="confirmPassword">Confirm Password:</label>
         <input type="password" id="confirmPassword" name="confirmPassword" value={formData.confirmPassword} onChange={handleChange} required />
-        <label htmlFor="voterId">Voter ID Number:</label>
+        <label htmlFor="voterId">Voter ID:</label>
         <input type="text" id="voterId" name="voterId" value={formData.voterId} onChange={handleChange} required />
         <button type="submit">Sign Up</button>
       </form>
