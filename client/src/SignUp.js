@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-import './SignUp.css'; 
+import './SignUp.css';
 
 const SignUp = () => {
   const [formData, setFormData] = useState({
@@ -9,11 +9,13 @@ const SignUp = () => {
     email: '',
     mobile: '',
     password: '',
-    confirmPassword: ''
+    confirmPassword: '',
+    voterId: ''
   });
   const [emailVerificationSent, setEmailVerificationSent] = useState(false);
   const [otp, setOTP] = useState('');
   const [verificationStatus, setVerificationStatus] = useState('');
+  const [passwordConstraints, setPasswordConstraints] = useState('');
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -21,11 +23,11 @@ const SignUp = () => {
 
   const handleEmailVerify = async () => {
     try {
-      console.log('Email to be verified:', formData.email); // Log the email input
+      console.log('Email to be verified:', formData.email);
       const response = await axios.post('http://localhost:3001/sendotp', { email: formData.email });
       if (response.status === 200) {
-        setVerificationStatus('');
         setEmailVerificationSent(true);
+        setVerificationStatus('');
       } else {
         throw new Error('Failed to send OTP');
       }
@@ -37,7 +39,8 @@ const SignUp = () => {
 
   const handleVerifyOTP = async () => {
     try {
-      const response = await axios.post('http://localhost:3001/verifyotp', { otp: otp });
+      console.log('Entered OTP:', otp);
+      const response = await axios.post('http://localhost:3001/verifyotp', { enteredOTP: otp });
       if (response.status === 200) {
         setVerificationStatus(response.data.message);
       } else {
@@ -57,7 +60,7 @@ const SignUp = () => {
     }
 
     try {
-      const response = await axios.post('http://localhost:3000/signup', formData);
+      const response = await axios.post('http://localhost:3001/signup', formData);
       if (response.status === 200) {
         alert('User signed up successfully!');
       } else {
@@ -67,8 +70,23 @@ const SignUp = () => {
       console.error(error);
       alert('Signup failed. Please try again.');
     }
+  };
 
-    console.log('Form Data:', formData);
+  const handlePasswordChange = (e) => {
+    const password = e.target.value;
+    // Password constraints
+    const constraints = [];
+    if (password.length < 8) {
+      constraints.push('Password must be at least 8 characters long.');
+    }
+    if (!/\d/.test(password)) {
+      constraints.push('Password must contain at least one digit.');
+    }
+    if (!/[!@#$%^&*]/.test(password)) {
+      constraints.push('Password must contain at least one special character.');
+    }
+    setPasswordConstraints(constraints.join(' '));
+    setFormData({ ...formData, password });
   };
 
   return (
@@ -93,9 +111,12 @@ const SignUp = () => {
         <label htmlFor="mobile">Mobile Number:</label>
         <input type="text" id="mobile" name="mobile" value={formData.mobile} onChange={handleChange} required />
         <label htmlFor="password">Password:</label>
-        <input type="password" id="password" name="password" value={formData.password} onChange={handleChange} required />
+        <input type="password" id="password" name="password" value={formData.password} onChange={handlePasswordChange} required />
+        {passwordConstraints && <p className="password-constraints">{passwordConstraints}</p>}
         <label htmlFor="confirmPassword">Confirm Password:</label>
         <input type="password" id="confirmPassword" name="confirmPassword" value={formData.confirmPassword} onChange={handleChange} required />
+        <label htmlFor="voterId">Voter ID Number:</label>
+        <input type="text" id="voterId" name="voterId" value={formData.voterId} onChange={handleChange} required />
         <button type="submit">Sign Up</button>
       </form>
       <p className="link-text">Already a user? <Link to="/login">Login</Link></p>
