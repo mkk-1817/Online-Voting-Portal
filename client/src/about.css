@@ -1,0 +1,86 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'poppins', sans-serif;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: url('front.jpg') no-repeat;
+    background-size: cover;
+    background-position: center;
+    overflow: hidden; /* Prevent scrolling */
+}
+
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 20px 100px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;    
+    z-index: 99;
+}
+
+.OnlineVoting {
+    font-size: 2em;
+    color: white;
+    user-select: none;
+}
+
+ul {
+    list-style-type: disc;
+    padding-left: 20px;
+    text-align: center; /* Center the list items */
+}
+
+li {
+    margin-bottom: 10px;
+}
+
+.wrapper1 {
+    position: relative;
+    width: 1100px;
+    max-width: calc(100vw - 20px); /* Ensure wrapper fits within viewport */
+    height: 400px;
+    background: transparent;
+    border: 2px solid rgba(255, 255, 255, .5);
+    border-radius: 20px;
+    backdrop-filter: blur(20px);
+    box-shadow: 0 0 30px rgba(0, 0, 0, 5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    left: 50%; /* Move the wrapper to the center horizontally */
+    transform: translateX(-50%); /* Adjust to center the wrapper */
+}
+
+.wrapper1 .icon-close {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 45px;
+    height: 45px;
+    background: #a8c021;
+    font-size: 2em;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-bottom-left-radius: 20px;
+    cursor: pointer;
+    z-index: 1;
+}
+
+.form-box2 h2 {
+    font-size: 1em;
+    color: #162938;
+    text-align: center;
+}

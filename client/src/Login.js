@@ -8,6 +8,7 @@ const Login = () => {
     password: ''
   });
   const [isLoggingIn, setIsLoggingIn] = useState(false);
+  const [loginSuccess, setLoginSuccess] = useState(false);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -20,7 +21,7 @@ const Login = () => {
       const response = await axios.post('/login', formData);
       console.log(response.data.message);
       alert('Login successful!');
-      // Redirect or perform other actions after successful login
+      setLoginSuccess(true); // Set login success to true
     } catch (error) {
       console.error(error.response.data.message);
       alert('Login failed. Please check your credentials and try again.');
@@ -40,6 +41,8 @@ const Login = () => {
           {isLoggingIn ? 'Logging In...' : 'Login'}
         </button>
       </form>
+      {/* Conditionally render Link to VoterPage if login is successful */}
+      {loginSuccess && <Link to="/voterpage">Proceed to Voter Page</Link>}
       <p className="link-text">New to portal? <Link to="/signup">Sign Up</Link></p>
     </div>
   );

@@ -27,8 +27,7 @@
 .input-with-button input[type="email"],
 .input-with-button input[type="text"],
 .input-with-button input[type="password"] {
-  padding-right: 30px; /* Adjust the padding to accommodate the button */
-  width: calc(100% - 40px);
+  width: calc(100% - 40px); /* Adjust the width to accommodate the button */
   border: 1px solid #ccc;
   border-radius: 4px;
   padding: 10px;

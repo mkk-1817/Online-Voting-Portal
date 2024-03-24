@@ -40,9 +40,11 @@ const SignUp = () => {
   const handleVerifyOTP = async () => {
     try {
       console.log('Entered OTP:', otp);
-      const response = await axios.post('http://localhost:3001/verifyotp', { enteredOTP: otp });
+      const response = await axios.post('http://localhost:3001/verifyotp', { email: formData.email, enteredOTP: otp });
       if (response.status === 200) {
         setVerificationStatus(response.data.message);
+        // Clear OTP from state on successful verification
+        setOTP('');
       } else {
         throw new Error('Invalid OTP');
       }
@@ -63,6 +65,8 @@ const SignUp = () => {
       const response = await axios.post('http://localhost:3001/signup', formData);
       if (response.status === 200) {
         alert('User signed up successfully!');
+        // Redirect to the voter page after successful signup
+        window.location.href = '/VoterPage';
       } else {
         throw new Error('Signup failed');
       }
@@ -121,6 +125,7 @@ const SignUp = () => {
       </form>
       <p className="link-text">Already a user? <Link to="/login">Login</Link></p>
       {verificationStatus && <p className="verification-message">{verificationStatus}</p>}
+      <p className="link-text">Go to <Link to="/VoterPage">Voter Page</Link></p>
     </div>
   );
 };
