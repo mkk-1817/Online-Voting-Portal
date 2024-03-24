@@ -38,19 +38,22 @@ const SignUp = () => {
   };
 
   const handleVerifyOTP = async () => {
-    try {
-      console.log('Entered OTP:', otp);
-      const response = await axios.post('http://localhost:3001/verifyotp', { enteredOTP: otp });
-      if (response.status === 200) {
-        setVerificationStatus(response.data.message);
-      } else {
-        throw new Error('Invalid OTP');
-      }
-    } catch (error) {
-      console.error(error);
-      setVerificationStatus('Invalid OTP. Please try again.');
+  try {
+    console.log('Entered OTP:', otp);
+    const response = await axios.post('http://localhost:3001/verifyotp', { email: formData.email, enteredOTP: otp });
+    if (response.status === 200) {
+      setVerificationStatus(response.data.message);
+      // Clear OTP from state on successful verification
+      setOTP('');
+    } else {
+      throw new Error('Invalid OTP');
     }
-  };
+  } catch (error) {
+    console.error(error);
+    setVerificationStatus('Invalid OTP. Please try again.');
+  }
+};
+
 
   const handleSignUp = async (e) => {
     e.preventDefault();
