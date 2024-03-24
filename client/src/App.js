@@ -1,7 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css';
-import Header from './Header'; // Import Header component
 import Login from './Login';
 import SignUp from './SignUp';
 import MainApp from './MainApp';
@@ -14,7 +13,7 @@ function App() {
   return (
     <Router>
       <div>
-        <Header /> {/* Render the Header component */}
+        {/* Render the Header component */}
         <div className="container">
           <Routes>
             <Route path="/" element={<MainApp />} />

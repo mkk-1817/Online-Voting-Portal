@@ -4,6 +4,7 @@ import { closeOutline } from 'ionicons/icons';
 import { Link } from 'react-router-dom';
 import './about.css';
 
+
 function About() {
     return (
         <div className="body-background">

@@ -12,6 +12,7 @@ export default function header(){
                     <Link to="/motto">Motto</Link>
                     <Link to="/contact">Contact</Link>
                     <Link to="/about">About</Link>
+                    <Link to="/SignUp">Logout</Link>
                    
                 </nav>
             </header>
