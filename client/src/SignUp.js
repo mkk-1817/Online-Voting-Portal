@@ -59,10 +59,16 @@ const SignUp = () => {
     }
   };
 
-  const handleSignUp = async (e) => {
+const handleSignUp = async (e) => {
   e.preventDefault();
   if (!emailVerificationSent) {
     setVerificationStatus('Please verify your email first.');
+    return;
+  }
+
+  // Check if OTP has been successfully verified
+  if (!verificationStatus.includes('successful')) {
+    setVerificationStatus('Please verify your email with OTP first.');
     return;
   }
 
@@ -86,6 +92,7 @@ const SignUp = () => {
     alert('Signup failed. Please check details.');
   }
 };
+
 
 const handlePasswordChange = (e) => {
   const password = e.target.value;
