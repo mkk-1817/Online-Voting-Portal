@@ -133,8 +133,31 @@ async function addUser(userData) {
             res.status(500).json({ message: 'Failed to submit vote' });
           }
         });
-        // Define the '/signup' endpoint
-// Define the '/signup' endpoint
+        app.post('/login', async (req, res) => {
+          try {
+              const { username, password } = req.body;
+              const dbName = 'Voting_portal';
+              const collectionName = 'Users';
+
+        // Access your collection
+              const collection = client.db(dbName).collection(collectionName);
+              // Authenticate user - you can query your MongoDB collection to check if the provided email and password match
+              const user = await collection.findOne({ username, password });
+              
+              if (user) {
+                  // If user exists, set session/token to maintain authentication state
+                  // For simplicity, let's just send a success message for now
+                  res.status(200).json({ message: 'Login successful' });
+              } else {
+                  // If user doesn't exist or credentials are incorrect, send an error message
+                  res.status(401).json({ message: 'Invalid email or password' });
+              }
+          } catch (error) {
+              console.error('Error during login:', error);
+              res.status(500).json({ message: 'Login failed' });
+          }
+      });
+        
 app.post('/signup', async (req, res) => {
     try {
         const userData = req.body;
