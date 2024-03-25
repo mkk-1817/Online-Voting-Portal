@@ -27,7 +27,8 @@
 .input-with-button input[type="email"],
 .input-with-button input[type="text"],
 .input-with-button input[type="password"] {
-  width: calc(100% - 40px); /* Adjust the width to accommodate the button */
+  max-width: 300px; /* Maximum width for input fields */
+  width: 100%;
   border: 1px solid #ccc;
   border-radius: 4px;
   padding: 10px;
@@ -45,6 +46,10 @@
 .otp-container input[type="text"] {
   flex: 1;
   margin-right: 10px;
+  max-width: 200px; /* Maximum width for OTP input field */
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 10px;
 }
 
 /* OTP submit button style */
@@ -67,4 +72,20 @@
   color: #dc3545;
   font-size: 14px;
   margin-top: 5px;
+}
+
+/* Error message style */
+.error-message {
+  color: red;
+  font-weight: bold;
+}
+
+/* Form container style */
+/* Form container style */
+.form-container {
+  width: 500px; /* Set the maximum width */
+  margin: 0 auto; /* Center the form horizontally */
+  padding: 20px; /* Add padding for spacing */
+  overflow-y: auto; /* Allow vertical scrolling */
+  max-height: 500px;
 }
