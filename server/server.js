@@ -96,10 +96,20 @@ async function main() {
         const collection = client.db(dbName).collection(collectionName);
 
         // Define a function to insert user data into the collection
-        async function addUser(userData) {
-            await collection.insertOne(userData);
-            console.log("User data inserted into the database");
-        }
+async function addUser(userData) {
+    const { username, voterId } = userData;
+    
+    // Check if the username or voterId already exists
+    const existingUser = await collection.findOne({ $or: [{ username }, { voterId }] });
+    if (existingUser) {
+        throw new Error('Username or voter ID already exists');
+    }
+
+    // If not, insert the new user data
+    await collection.insertOne(userData);
+    console.log("User data inserted into the database");
+}
+
         async function addVoteDetails(voterId, partyId) {
           try {
             const dbName = 'Voting_portal';
@@ -124,17 +134,23 @@ async function main() {
           }
         });
         // Define the '/signup' endpoint
-        app.post('/signup', async (req, res) => {
-            try {
-                const userData = req.body;
-                // Call the function to insert user data into the collection
-                await addUser(userData);
-                res.status(200).json({ message: 'User signed up successfully' });
-            } catch (error) {
-                console.error('Error signing up user:', error);
-                res.status(500).json({ message: 'Failed to sign up user' });
-            }
-        });
+// Define the '/signup' endpoint
+app.post('/signup', async (req, res) => {
+    try {
+        const userData = req.body;
+        // Call the function to insert user data into the collection
+        await addUser(userData);
+        res.status(200).json({ message: 'User signed up successfully' });
+    } catch (error) {
+        console.error('Error signing up user:', error);
+        if (error.message === 'Username or voter ID already exists') {
+            res.status(400).json({ message: 'Username or voter ID already exists' });
+        } else {
+            res.status(500).json({ message: 'Failed to sign up user' });
+        }
+    }
+});
+
 
     } catch (err) {
         console.error("Error occurred:", err);
