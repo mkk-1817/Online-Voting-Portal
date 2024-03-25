@@ -55,26 +55,33 @@ const SignUp = () => {
   };
 
   const handleSignUp = async (e) => {
-    e.preventDefault();
-    if (!emailVerificationSent) {
-      setVerificationStatus('Please verify your email first.');
-      return;
-    }
+  e.preventDefault();
+  if (!emailVerificationSent) {
+    setVerificationStatus('Please verify your email first.');
+    return;
+  }
 
-    try {
-      const response = await axios.post('http://localhost:3001/signup', formData);
-      if (response.status === 200) {
-        alert('User signed up successfully!');
-        // Redirect to the voter page after successful signup
-        window.location.href = '/VoterPage';
-      } else {
-        throw new Error('Signup failed');
-      }
-    } catch (error) {
-      console.error(error);
-      alert('Signup failed. Please try again.');
+  // Check if password and confirm password match
+  if (formData.password !== formData.confirmPassword) {
+    alert('Password and confirm password do not match.');
+    return;
+  }
+
+  try {
+    const response = await axios.post('http://localhost:3001/signup', formData);
+    if (response.status === 200) {
+      alert('User signed up successfully!');
+      // Redirect to the voter page after successful signup
+      window.location.href = '/VoterPage';
+    } else {
+      throw new Error('Signup failed');
     }
-  };
+  } catch (error) {
+    console.error(error);
+    alert('Signup failed. Please check details.');
+  }
+};
+
 
   const handlePasswordChange = (e) => {
     const password = e.target.value;
