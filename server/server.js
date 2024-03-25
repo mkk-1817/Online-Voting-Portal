@@ -142,7 +142,6 @@ app.post('/signup', async (req, res) => {
         await addUser(userData);
         res.status(200).json({ message: 'User signed up successfully' });
     } catch (error) {
-        console.error('Error signing up user:', error);
         if (error.message === 'Username or voter ID already exists') {
             res.status(400).json({ message: 'Username or voter ID already exists' });
         } else {
