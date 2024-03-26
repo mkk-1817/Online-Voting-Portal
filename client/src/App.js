@@ -8,6 +8,7 @@ import VoterPage from './VoterPage';
 import About from './about';
 import Contact from './contact';
 import Motto from './motto';
+import Result from './Result'; // Corrected import statement for Result component
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/motto" element={<Motto />} />
+            <Route path="/Result" element={<Result />} />
           </Routes>
         </div>
       </div>
