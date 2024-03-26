@@ -9,7 +9,7 @@ const app = express();
 const PORT = 3001;
 
 app.use(bodyParser.json());
-app.use(cors({ origin: "https://velvety-macaron-61edd5.netlify.app/", credentials: true }));
+app.use(cors({ origin: "https://joyful-nougat-0eda3f.netlify.app/", credentials: true }));
 const uri = 'mongodb+srv://karthikkrishna230104:be_alone@cluster0.eg6w25h.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0';
 
 // In-memory storage for email verification and OTP
