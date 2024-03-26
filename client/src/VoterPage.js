@@ -80,7 +80,7 @@ function VoterPage() {
             }
 
             // Make a POST request to submit the vote
-            await axios.post('https://online-voting-portal-mkk-1817s-projects.vercel.app/submitvote', { voterId, partyName: selectedParty });
+            await axios.post('https://online-voting-portal.onrender.com/submitvote', { voterId, partyName: selectedParty });
             alert('Vote submitted successfully');
             // Navigate to the Result page
             window.location.href = '/Result';
