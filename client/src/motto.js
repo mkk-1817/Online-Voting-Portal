@@ -1,6 +1,5 @@
 import React from 'react';
 import './motto.css';
-import Logoutheader from './Logoutheader'; // Import the Logoutheader component
 import { IonIcon } from '@ionic/react';
 import { closeOutline } from 'ionicons/icons'; // Import the specific icon
 import { Link } from 'react-router-dom'; // Import Link from react-router-dom
@@ -8,7 +7,6 @@ import { Link } from 'react-router-dom'; // Import Link from react-router-dom
 function Motto() {
     return (
         <div className="body-background">
-            <Logoutheader /> {/* Include the Logoutheader component */}
             <div className="wrapper3"> {/* Changed from wrapper to wrapper3 */}
                 <Link to="/voterpage"> {/* Link to the voter page */}
                     <span className="icon-close" id="redirectButton2"> {/* Same class name */}

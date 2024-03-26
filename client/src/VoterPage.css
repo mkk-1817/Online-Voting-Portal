@@ -1,65 +1,15 @@
-.body-background {
-    background-color: #f2f2f2;
-    height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+/* VoterPage.css */
+
+.voter-page-content {
+  margin: 20px;
+  padding: 20px;
+  background-color: #f0f0f0;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-.form-box2 {
-    width: 80%;
-    max-width: 600px;
-    background-color: #fff;
-    border-radius: 10px;
-    padding: 20px;
-    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
-    position: relative;
-    text-align: center;
+.voter-page-content h2 {
+  color: #333;
 }
 
-.form-box2 h2 {
-    color: #333;
-    font-size: 24px;
-    margin-bottom: 20px;
-}
-
-.form-box2 ul {
-    list-style: none;
-    padding: 0;
-}
-
-.form-box2 ul li {
-    margin-bottom: 10px;
-}
-
-.form-box2 input[type="radio"] {
-    margin-right: 10px;
-}
-
-.form-box2 button {
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    margin-top: 20px;
-}
-
-.form-box2 button:disabled {
-    background-color: #ccc;
-    cursor: not-allowed;
-}
-
-.form-box2 a {
-    color: #007bff;
-    text-decoration: none;
-}
-
-.icon-close {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    cursor: pointer;
-}
+/* Add more styles as needed for the VoterPage component */

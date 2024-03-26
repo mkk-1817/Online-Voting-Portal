@@ -4,7 +4,7 @@ import axios from 'axios'; // Import axios for making HTTP requests
 
 const Login = () => {
   const [formData, setFormData] = useState({
-    username: '',
+    email: '',
     password: ''
   });
   const [isLoggingIn, setIsLoggingIn] = useState(false);
@@ -18,7 +18,7 @@ const Login = () => {
     e.preventDefault();
     setIsLoggingIn(true);
     try {
-      const response = await axios.post('http://localhost:3001/login', formData);
+      const response = await axios.post('/login', formData);
       console.log(response.data.message);
       alert('Login successful!');
       setLoginSuccess(true); // Set login success to true
@@ -33,8 +33,8 @@ const Login = () => {
     <div className="form-container">
       <h2>Login</h2>
       <form onSubmit={handleLogin}>
-        <label htmlFor="email">Username:</label>
-        <input type="username" id="username" name="username" value={formData.username} onChange={handleChange} required />
+        <label htmlFor="email">Email:</label>
+        <input type="email" id="email" name="email" value={formData.email} onChange={handleChange} required />
         <label htmlFor="password">Password:</label>
         <input type="password" id="password" name="password" value={formData.password} onChange={handleChange} required />
         <button type="submit" disabled={isLoggingIn}>

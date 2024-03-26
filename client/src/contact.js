@@ -1,6 +1,5 @@
 import React from 'react';
 import './contact.css';
-import Logoutheader from './Logoutheader'; // Import the Logoutheader component
 import { IonIcon } from '@ionic/react';
 import { closeOutline } from 'ionicons/icons';
 import { Link } from 'react-router-dom'; // Import Link from react-router-dom
@@ -8,7 +7,6 @@ import { Link } from 'react-router-dom'; // Import Link from react-router-dom
 function Contact() {
     return (
         <div className="body-background">
-            <Logoutheader /> {/* Include the Logoutheader component */}
             <div className="wrapper2">
                 <Link to="/voterpage"> {/* Link to the voter page */}
                     <span className="icon-close" id="redirectButton2"> 

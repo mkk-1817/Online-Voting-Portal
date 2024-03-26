@@ -2,13 +2,12 @@ import React from 'react';
 import { IonIcon } from '@ionic/react';
 import { closeOutline } from 'ionicons/icons';
 import { Link } from 'react-router-dom';
-import Logoutheader from './Logoutheader'; // Import the Logoutheader component
 import './about.css';
+
 
 function About() {
     return (
         <div className="body-background">
-            <Logoutheader /> {/* Include the Logoutheader component */}
             <div className="wrapper1">
                 <Link to="/voterpage">
                     <span className="icon-close" id="redirectButton2"> 
