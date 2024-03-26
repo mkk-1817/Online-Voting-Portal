@@ -1,19 +1,21 @@
 import React from 'react';
-import './';
-import Logoutheader from './Logoutheader'; 
+import './contact.css'; // Assuming you have a CSS file for styling
+import Logoutheader from './Logoutheader'; // Import the Logoutheader component
 import { IonIcon } from '@ionic/react';
 import { closeOutline } from 'ionicons/icons';
-import { Link } from 'react-router-dom'; 
+import { Link } from 'react-router-dom'; // Import Link from react-router-dom
 
-function Contact() {
+function Result() {
     const today = new Date();
-
-    
     const futureDate = new Date(today);
     futureDate.setDate(futureDate.getDate() + 15);
+
+    // Format the future date for display
+    const formattedDate = futureDate.toDateString();
+
     return (
         <div className="body-background">
-            <Logoutheader /> 
+            <Logoutheader /> {/* Include the Logoutheader component */}
             <div className="wrapper2">
                 <Link to="/voterpage"> {/* Link to the voter page */}
                     <span className="icon-close" id="redirectButton2"> 
@@ -21,11 +23,11 @@ function Contact() {
                     </span>
                 </Link>
                 <div className="form-box login">
-                    <h3>Results to be published through NEWS on {futureDate}</h3>
+                    <h3>Results to be published through NEWS on {formattedDate}</h3>
                 </div>
             </div>
         </div>
     );
 }
 
-export default Contact;
+export default Result;
