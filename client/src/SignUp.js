@@ -15,13 +15,19 @@ const SignUp = () => {
   const [emailVerificationSent, setEmailVerificationSent] = useState(false);
   const [otp, setOTP] = useState('');
   const [verificationStatus, setVerificationStatus] = useState('');
-  const [passwordConstraints, setPasswordConstraints] = useState(''); // Initialize with empty string or default constraints message
+  const [passwordConstraints, setPasswordConstraints] = useState(''); 
+  const [voterIdConstraints, setVoterIdConstraints] = useState(''); 
 
   useEffect(() => {
     // Set initial password constraints message
-    const initialConstraints = 'Password must be at least 8 characters long, contain at least one digit, and one special character.';
-    setPasswordConstraints(initialConstraints);
+    const initialPasswordConstraints = 'Password must be at least 8 characters long, contain at least one digit, and one special character.';
+    setPasswordConstraints(initialPasswordConstraints);
+
+    // Set initial voter ID constraints message
+    const initialVoterIdConstraints = 'Voter ID must start with 3 letters followed by 7 numbers.';
+    setVoterIdConstraints(initialVoterIdConstraints);
   }, []);
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -59,99 +65,121 @@ const SignUp = () => {
     }
   };
 
-const handleSignUp = async (e) => {
-  e.preventDefault();
-  if (!emailVerificationSent) {
-    setVerificationStatus('Please verify your email first.');
-    return;
-  }
-
-  // Check if OTP has been successfully verified
-  if (!verificationStatus.includes('successful')) {
-    setVerificationStatus('Please verify your email with OTP first.');
-    return;
-  }
-
-  // Check if password and confirm password match
-  if (formData.password !== formData.confirmPassword) {
-    alert('Password and confirm password do not match.');
-    return;
-  }
-
-  try {
-    const response = await axios.post('http://localhost:3001/signup', formData);
-    if (response.status === 200) {
-      alert('User signed up successfully!');
-      // Redirect to the voter page after successful signup
-      window.location.href = '/VoterPage';
-    } else {
-      throw new Error('Signup failed');
+  const handlePasswordChange = (e) => {
+    const password = e.target.value;
+    // Password constraints
+    const constraints = [];
+    if (password.length < 8) {
+      constraints.push('Password must be at least 8 characters long.');
     }
-  } catch (error) {
-    console.error(error);
-    alert('Signup failed. Please check details.');
-  }
-};
+    if (!/\d/.test(password)) {
+      constraints.push('Password must contain at least one digit.');
+    }
+    if (!/[!@#$%^&*]/.test(password)) {
+      constraints.push('Password must contain at least one special character.');
+    }
+    const constraintsMessage = constraints.length > 0 ? constraints.join(' ') : 'Password meets requirements.';
+    setPasswordConstraints(constraintsMessage);
+    setFormData({ ...formData, password });
+  };
 
+  const handleVoterIdChange = (e) => {
+    const voterId = e.target.value;
+    // Voter ID constraints
+    const voterIdRegex = /^[a-zA-Z]{3}\d{7}$/;
+    const constraintsMessage = voterIdRegex.test(voterId) ? '' : 'Invalid VoterId';
+    setVoterIdConstraints(constraintsMessage);
+    setFormData({ ...formData, voterId });
+  };
 
-const handlePasswordChange = (e) => {
-  const password = e.target.value;
-  // Password constraints
-  const constraints = [];
-  if (password.length < 8) {
-    constraints.push('Password must be at least 8 characters long.');
-  }
-  if (!/\d/.test(password)) {
-    constraints.push('Password must contain at least one digit.');
-  }
-  if (!/[!@#$%^&*]/.test(password)) {
-    constraints.push('Password must contain at least one special character.');
-  }
-  const constraintsMessage = constraints.length > 0 ? constraints.join(' ') : 'Password meets requirements.';
-  setPasswordConstraints(constraintsMessage);
-  setFormData({ ...formData, password });
-};
+  const handleSignUp = async (e) => {
+    e.preventDefault();
+    if (!emailVerificationSent) {
+      setVerificationStatus('Please verify your email first.');
+      return;
+    }
+
+    // Check if OTP has been successfully verified
+    if (!verificationStatus.includes('successful')) {
+      setVerificationStatus('Please verify your email with OTP first.');
+      return;
+    }
+
+    // Check if password and confirm password match
+    if (formData.password !== formData.confirmPassword) {
+      alert('Password and confirm password do not match.');
+      return;
+    }
+
+    // Check if password meets requirements
+    if (passwordConstraints !== 'Password meets requirements.') {
+      alert(passwordConstraints);
+      return;
+    }
+
+    // Check if Voter ID meets requirements
+    if (voterIdConstraints !== '') {
+      alert(voterIdConstraints);
+      return;
+    }
+
+    try {
+      const response = await axios.post('http://localhost:3001/signup', formData);
+      if (response.status === 200) {
+        alert('User signed up successfully!');
+        // Redirect to the voter page after successful signup
+        window.location.href = '/VoterPage';
+      } else {
+        throw new Error('Signup failed');
+      }
+    } catch (error) {
+      console.error(error);
+      alert('Signup failed. Please check details.');
+    }
+  };
 
   return (
     <div className="form-container">
-  <h2>Sign Up</h2>
-  <form onSubmit={handleSignUp}>
-    <label htmlFor="username">Username:</label>
-    <input type="text" id="username" name="username" value={formData.username} onChange={handleChange} required />
-    <label htmlFor="email">Email:</label>
-    <div className="input-with-button">
-      <input type="email" id="email" name="email" value={formData.email} onChange={handleChange} required />
-      <button type="button" className="verify-button" onClick={handleEmailVerify} disabled={emailVerificationSent}>
-        {emailVerificationSent ? 'Verified' : 'Verify'}
-      </button>
-    </div>
-    {emailVerificationSent && (
-      <div className="otp-container">
-        <input type="text" placeholder="Enter OTP" value={otp} onChange={(e) => setOTP(e.target.value)} />
-        <button type="button" onClick={handleVerifyOTP}>Verify OTP</button>
-      </div>
-    )}
-    <label htmlFor="mobile">Mobile Number:</label>
-    <input type="text" id="mobile" name="mobile" value={formData.mobile} onChange={handleChange} required />
-    
-    
-    
-    <label htmlFor="password">Password:</label>
-    <input type="password" id="password" name="password" value={formData.password} onChange={handlePasswordChange} required />
-    {/* Password constraints displayed here */}
-    {passwordConstraints && <p className="password-constraints">{passwordConstraints}</p>}    
-    <br></br>
-    <label htmlFor="confirmPassword">Confirm Password:</label>
-    <input type="password" id="confirmPassword" name="confirmPassword" value={formData.confirmPassword} onChange={handleChange} required />
-    <label htmlFor="voterId">Voter ID Number:</label>
-    <input type="text" id="voterId" name="voterId" value={formData.voterId} onChange={handleChange} required />
-    <button type="submit">Sign Up</button>
-  </form>
-  <p className="link-text">Already a user? <Link to="/login">Login</Link></p>
-  {verificationStatus && <p className="verification-message">{verificationStatus}</p>}
-</div>
+      <h2>Sign Up</h2>
+      <form onSubmit={handleSignUp}>
+        <label htmlFor="username">Username:</label>
+        <input type="text" id="username" name="username" value={formData.username} onChange={handleChange} required />
+        <label htmlFor="email">Email:</label>
+        <div className="input-with-button">
+          <input type="email" id="email" name="email" value={formData.email} onChange={handleChange} required />
+          <button type="button" className="verify-button" onClick={handleEmailVerify} disabled={emailVerificationSent}>
+            {emailVerificationSent ? 'Verified' : 'Verify'}
+          </button>
+        </div>
+        {emailVerificationSent && (
+          <div className="otp-container">
+            <input type="text" placeholder="Enter OTP" value={otp} onChange={(e) => setOTP(e.target.value)} />
+            <button type="button" onClick={handleVerifyOTP}>Verify OTP</button>
+          </div>
+        )}
+        <label htmlFor="mobile">Mobile Number:</label>
+        <input type="text" id="mobile" name="mobile" value={formData.mobile} onChange={handleChange} required />
 
+        <label htmlFor="password">Password:</label>
+        <input type="password" id="password" name="password" value={formData.password} onChange={handlePasswordChange} required />
+                {/* Password constraints displayed here */}
+        {passwordConstraints && <p className="password-constraints">{passwordConstraints}</p>}
+
+        <label htmlFor="confirmPassword">Confirm Password:</label>
+        <input type="password" id="confirmPassword" name="confirmPassword" value={formData.confirmPassword} onChange={handleChange} required />
+
+        <label htmlFor="voterId">Voter ID Number:</label>
+        <input type="text" id="voterId" name="voterId" value={formData.voterId} onChange={handleVoterIdChange} required />
+        {/* Voter ID constraints displayed here */}
+        {voterIdConstraints && <p className="voterId-constraints">{voterIdConstraints}</p>}
+
+        <button type="submit">Sign Up</button>
+      </form>
+      <p className="link-text">Already a user? <Link to="/login">Login</Link></p>
+      {verificationStatus && <p className="verification-message">{verificationStatus}</p>}
+    </div>
   );
 };
 
 export default SignUp;
+
