@@ -47,7 +47,15 @@ function VoterPage() {
 
     // Function to handle VoterID input change
     const handleVoterIdChange = (event) => {
-        setVoterId(event.target.value);
+        const inputValue = event.target.value;
+
+        // Regular expression to match the required format: first 3 letters followed by 7 digits
+        const voterIdRegex = /^[a-zA-Z]{3}\d{7}$/;
+
+        // Check if the input matches the required format and has a length of 10 characters
+        if (voterIdRegex.test(inputValue) || inputValue === '' || inputValue.length < 10) {
+            setVoterId(inputValue);
+        }
     };
 
     // Function to toggle showing the party list
@@ -61,6 +69,13 @@ function VoterPage() {
             // Check if VoterID and selected party are provided
             if (!voterId || !selectedParty) {
                 alert('Please provide both VoterID and select a party');
+                return;
+            }
+
+            // Check if VoterID is in the correct format
+            const voterIdRegex = /^[a-zA-Z]{3}\d{7}$/;
+            if (!voterIdRegex.test(voterId)) {
+                alert('VoterID is not in the correct format. Please enter a valid VoterID.');
                 return;
             }
 
