@@ -65,9 +65,9 @@ function VoterPage() {
             }
 
             // Make a POST request to submit the vote
-            const response = await axios.post('http://localhost:3001/submitvote', { voterId, partyName: selectedParty });
-            console.log(response.data.message);
+            await axios.post('http://localhost:3001/submitvote', { voterId, partyName: selectedParty });
             alert('Vote submitted successfully');
+            // Navigate to the Result page
             window.location.href = '/Result';
 
         } catch (error) {
