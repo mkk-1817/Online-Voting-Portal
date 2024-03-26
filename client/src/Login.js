@@ -18,7 +18,7 @@ const Login = () => {
     e.preventDefault();
     setIsLoggingIn(true);
     try {
-      const response = await axios.post('https://online-voting-portal-mkk-1817s-projects.vercel.app/login', formData);
+      const response = await axios.post('https://online-voting-portal.onrender.com/login', formData);
       console.log(response.data.message);
       alert('Login successful!');
       setLoginSuccess(true); // Set login success to true
