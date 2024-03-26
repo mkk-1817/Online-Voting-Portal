@@ -108,40 +108,42 @@ async function addUser(userData) {
     // If not, insert the new user data
     await collection.insertOne(userData);
     console.log("User data inserted into the database");
-}
-
-        async function addVoteDetails(voterId, partyId) {
-          try {
-            const dbName = 'Voting_portal';
-            const collectionName = 'VoteDetails';
-            const collection = client.db(dbName).collection(collectionName);
-            await collection.insertOne({ voterId, partyId });
-            console.log("Vote details added to the database");
-          } catch (error) {
-            console.error('Error adding vote details:', error);
-          }
-        }
+}        
         
         // Route to handle vote submission
-        app.post('/submitvote', async (req, res) => {
-          try {
-            const { voterId, partyId } = req.body;
-            await addVoteDetails(voterId, partyId);
-            res.status(200).json({ message: 'Vote submitted successfully' });
-          } catch (error) {
-            console.error('Error submitting vote:', error);
-            res.status(500).json({ message: 'Failed to submit vote' });
-          }
-        });
+app.post('/submitvote', async (req, res) => {
+  try {
+    const { voterId, partyName } = req.body;
+    // Check if both voterId and partyName are provided
+    if (!voterId || !partyName) {
+      return res.status(400).json({ message: 'Voter ID and party name are required' });
+    }
+
+    // Check if the voterId already exists in VoteDetails collection
+    const voteDetailsCollection = client.db('Voting_portal').collection('VoteDetails');
+    const existingVote = await voteDetailsCollection.findOne({ voterId });
+    if (existingVote) {
+      return res.status(400).json({ message: 'Voter already voted' });
+    }
+
+    // If voterId doesn't exist, insert the vote details
+    await voteDetailsCollection.insertOne({ voterId, partyName });
+    console.log('Vote details added to the database');
+    
+    res.status(200).json({ message: 'Vote submitted successfully' });
+  } catch (error) {
+    console.error('Error submitting vote:', error);
+    res.status(500).json({ message: 'Failed to submit vote' });
+  }
+});
+
+
         app.post('/login', async (req, res) => {
           try {
               const { username, password } = req.body;
               const dbName = 'Voting_portal';
               const collectionName = 'Users';
-
-        // Access your collection
               const collection = client.db(dbName).collection(collectionName);
-              // Authenticate user - you can query your MongoDB collection to check if the provided email and password match
               const user = await collection.findOne({ username, password });
               
               if (user) {
