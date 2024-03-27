@@ -35,7 +35,7 @@ const SignUp = () => {
   const handleEmailVerify = async () => {
     try {
       console.log('Email to be verified:', formData.email);
-      const response = await axios.post('https://online-voting-portal.onrender.com/sendotp', { email: formData.email });
+      const response = await axios.post('http://localhost:3001/sendotp', { email: formData.email });
       if (response.status === 200) {
         setEmailVerificationSent(true);
         setVerificationStatus('');
@@ -51,7 +51,7 @@ const SignUp = () => {
   const handleVerifyOTP = async () => {
     try {
       console.log('Entered OTP:', otp);
-      const response = await axios.post('https://online-voting-portal.onrender.com/verifyotp', { email: formData.email, enteredOTP: otp });
+      const response = await axios.post('http://localhost:3001/verifyotp', { email: formData.email, enteredOTP: otp });
       if (response.status === 200) {
         setVerificationStatus(response.data.message);
         // Clear OTP from state on successful verification
@@ -124,7 +124,7 @@ const SignUp = () => {
     }
 
     try {
-      const response = await axios.post('https://online-voting-portal.onrender.com/signup', formData);
+      const response = await axios.post('http://localhost:3001/signup', formData);
       if (response.status === 200) {
         alert('User signed up successfully!');
         // Redirect to the voter page after successful signup
