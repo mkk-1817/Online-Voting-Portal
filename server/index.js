@@ -1,190 +1,195 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const cors = require('cors');
-const nodemailer = require('nodemailer');
 const { MongoClient } = require('mongodb');
-const mongoose = require('mongoose');
 
-const app = express();
-const PORT = 3001;
+// Connection URI
+const uri = 'mongodb+srv://karthikkrishna230104:be_alone@cluster0.eg6w25h.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0'; // Update with your MongoDB connection URI
+const dbName = 'Voting_portal'; // Update with your database name
 
-app.use(bodyParser.json());
-app.use(cors({ origin: "https://online-voting-portal.netlify.app", credentials: true }));
-const uri = 'mongodb+srv://karthikkrishna230104:be_alone@cluster0.eg6w25h.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0';
+// Data to be inserted
+const data = [
+  {
+    "Name": "John Smith",
+    "DateOfBirth": "1990-01-01",
+    "HouseNumber": "1",
+    "StreetName": "Main Street",
+    "Locality": "Downtown",
+    "City": "Mumbai",
+    "State": "Maharashtra",
+    "AadharNumber": "1234 5678 9012",
+    "voterID": "ABC1234567"
+  },
+  {
+    "Name": "Alice Johnson",
+    "DateOfBirth": "1985-02-02",
+    "HouseNumber": "2",
+    "StreetName": "First Avenue",
+    "Locality": "West End",
+    "City": "Delhi",
+    "State": "Delhi",
+    "AadharNumber": "2345 6789 0123",
+    "voterID": "DEF2345678"
+  },
+  {
+    "Name": "Michael Brown",
+    "DateOfBirth": "1980-03-03",
+    "HouseNumber": "3",
+    "StreetName": "Oak Street",
+    "Locality": "Uptown",
+    "City": "Kolkata",
+    "State": "West Bengal",
+    "AadharNumber": "3456 7890 1234",
+    "voterID": "GHI3456789"
+  },
+  {
+    "Name": "Emily Davis",
+    "DateOfBirth": "1975-04-04",
+    "HouseNumber": "4",
+    "StreetName": "Elm Avenue",
+    "Locality": "Midtown",
+    "City": "Chennai",
+    "State": "Tamil Nadu",
+    "AadharNumber": "4567 8901 2345",
+    "voterID": "JKL4567890"
+  },
+  {
+    "Name": "James Wilson",
+    "DateOfBirth": "1970-05-05",
+    "HouseNumber": "5",
+    "StreetName": "Cedar Street",
+    "Locality": "East Side",
+    "City": "Bangalore",
+    "State": "Karnataka",
+    "AadharNumber": "5678 9012 3456",
+    "voterID": "MNO5678901"
+  },
+  {
+    "Name": "Sophia Martinez",
+    "DateOfBirth": "1965-06-06",
+    "HouseNumber": "6",
+    "StreetName": "Pine Road",
+    "Locality": "South End",
+    "City": "Hyderabad",
+    "State": "Telangana",
+    "AadharNumber": "6789 0123 4567",
+    "voterID": "PQR6789012"
+  },
+  {
+    "Name": "Liam Miller",
+    "DateOfBirth": "1960-07-07",
+    "HouseNumber": "7",
+    "StreetName": "Birch Lane",
+    "Locality": "North Side",
+    "City": "Pune",
+    "State": "Maharashtra",
+    "AadharNumber": "7890 1234 5678",
+    "voterID": "STU7890123"
+  },
+  {
+    "Name": "Olivia Taylor",
+    "DateOfBirth": "1955-08-08",
+    "HouseNumber": "8",
+    "StreetName": "Maple Drive",
+    "Locality": "Downtown",
+    "City": "Ahmedabad",
+    "State": "Gujarat",
+    "AadharNumber": "8901 2345 6789",
+    "oterID": "VWX8901234"
+  },
+  {
+    "Name": "Noah Anderson",
+    "DateOfBirth": "1950-09-09",
+    "HouseNumber": "9",
+    "StreetName": "Cypress Court",
+    "Locality": "Uptown",
+    "City": "Jaipur",
+    "State": "Rajasthan",
+    "AadharNumber": "9012 3456 7890",
+    "voterID": "YZA9012345"
+  },
+  {
+    "Name": "Emma Thomas",
+    "DateOfBirth": "1945-10-10",
+    "HouseNumber": "10",
+    "StreetName": "Chestnut Street",
+    "Locality": "Midtown",
+    "City": "Lucknow",
+    "State": "Uttar Pradesh",
+    "AadharNumber": "0123 4567 8901",
+    "voterID": "BCD0123456"
+  },
+  {
+    "Name": "William Hernandez",
+    "DateOfBirth": "1940-11-11",
+    "HouseNumber": "11",
+    "StreetName": "Hickory Lane",
+    "Locality": "West End",
+    "City": "Chandigarh",
+    "State": "Chandigarh",
+    "AadharNumber": "5678 9012 3456",
+    "voterID": "EFG1234567"
+  },
+  {
+    "Name": "Isabella Young",
+    "DateOfBirth": "1935-12-12",
+    "HouseNumber": "12",
+    "StreetName": "Sycamore Avenue",
+    "Locality": "East Side",
+    "City": "Bhopal",
+    "State": "Madhya Pradesh",
+    "AadharNumber": "2345 6789 0123",
+    "voterID": "HIJ2345678"
+  },
+  {
+    "Name": "Mason King",
+    "DateOfBirth": "1930-01-13",
+    "HouseNumber": "13",
+    "StreetName": "Palm Street",
+    "Locality": "South End",
+    "City": "Guwahati",
+    "State": "Assam",
+    "AadharNumber": "8901 2345 6789",
+    "voterID": "KLM3456789"
+  },
+  {
+    "Name": "Ava Lopez",
+    "DateOfBirth": "1925-02-14",
+    "HouseNumber": "14",
+    "StreetName": "Willow Lane",
+    "Locality": "North Side",
+    "City": "Visakhapatnam",
+    "State": "Andhra Pradesh",
+    "AadharNumber": "3456 7890 1234",
+    "voterID": "NOP4567890"
+  },
+  {
+    "Name": "Logan Wright",
+    "DateOfBirth": "1920-03-15",
+    "HouseNumber": "15",
+    "StreetName": "Cedar Street",
+    "Locality": "Downtown",
+    "City": "Nagpur",
+    "State": "Maharashtra",
+    "AadharNumber": "0123 4567 8901",
+    "voterID": "QRS5678901"
+  }
+]
 
-// In-memory storage for email verification and OTP
-const emailVerificationStore = new Map();
-const otpStore = new Map();
-// MongoDB client
-const client = new MongoClient(uri);
+async function insertDocuments() {
+  const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
-// Connect to MongoDB
-async function connectToMongoDB() {
   try {
     await client.connect();
-    console.log("Connected to MongoDB");
+
+    const db = client.db(dbName);
+    const collection = db.collection('Eligibletovote'); // Update with your collection name
+
+    // Inserting data into the collection
+    const result = await collection.insertMany(data);
+    console.log(`${result.insertedCount} documents inserted.`);
   } catch (err) {
-    console.error("Error connecting to MongoDB:", err);
+    console.error('Error inserting documents:', err);
+  } finally {
+    // Close the connection
+    client.close();
   }
 }
-const transporter = nodemailer.createTransport({
-  service: 'Gmail', // Assuming you're using Gmail. You can use any other SMTP service here.
-  auth: {
-    user: '71762133044@cit.edu.in', // Your email address
-    pass: 'mani@2133044' // Your email password (make sure to use app password or enable less secure apps for Gmail)
-  }
-});
-
-// Route to send OTP to the provided email
-app.post('/sendotp', async (req, res) => {
-  const { email } = req.body;
-  const otp = Math.floor(100000 + Math.random() * 900000); // Generate 6-digit OTP
-
-  try {
-    // Store the OTP in otpStore
-    otpStore.set(email, otp);
-
-    // Send email with OTP
-    const info = await transporter.sendMail({
-      from: '71762133044@cit.edu.in',
-      to: email,
-      subject: 'OTP Verification',
-      text: `Your OTP for verification is: ${otp}`
-    });
-
-    console.log('Email sent: ', info.response);
-    res.status(200).send('OTP sent successfully');
-  } catch (error) {
-    console.error('Error sending email: ', error);
-    res.status(500).send('Failed to send OTP');
-  }
-});
-
-// Route to verify OTP
-app.post('/verifyotp', (req, res) => {
-  const { email, enteredOTP } = req.body;
-
-  try {
-    // Retrieve the stored OTP from otpStore
-    const storedOTP = otpStore.get(email);
-
-    if (storedOTP && storedOTP.toString() === enteredOTP.toString()) {
-      // If OTP matches, delete it from otpStore (optional)
-      otpStore.delete(email);
-      res.status(200).send({ message: 'OTP verification successful' });
-    } else {
-      res.status(400).send({ error: 'Invalid OTP' });
-    }
-  } catch (error) {
-    console.error('Error verifying OTP: ', error);
-    res.status(500).send('Failed to verify OTP');
-  }
-});
-
-
-async function main() {
-    try {
-        // Connect to the MongoDB cluster
-        await client.connect();
-        console.log("Connected to MongoDB");
-
-        // Database and collection name
-        const dbName = 'Voting_portal';
-        const collectionName = 'Users';
-
-        // Access your collection
-        const collection = client.db(dbName).collection(collectionName);
-
-        // Define a function to insert user data into the collection
-async function addUser(userData) {
-    const { username, voterId } = userData;
-    
-    // Check if the username or voterId already exists
-    const existingUser = await collection.findOne({ $or: [{ username }, { voterId }] });
-    if (existingUser) {
-        throw new Error('Username or voter ID already exists');
-    }
-
-    // If not, insert the new user data
-    await collection.insertOne(userData);
-    console.log("User data inserted into the database");
-}        
-        
-        // Route to handle vote submission
-app.post('/submitvote', async (req, res) => {
-  try {
-    const { voterId, partyName } = req.body;
-    // Check if both voterId and partyName are provided
-    if (!voterId || !partyName) {
-      return res.status(400).json({ message: 'Voter ID and party name are required' });
-    }
-
-    // Check if the voterId already exists in VoteDetails collection
-    const voteDetailsCollection = client.db('Voting_portal').collection('VoteDetails');
-    const existingVote = await voteDetailsCollection.findOne({ voterId });
-    if (existingVote) {
-      return res.status(400).json({ message: 'Voter already voted' });
-    }
-
-    // If voterId doesn't exist, insert the vote details
-    await voteDetailsCollection.insertOne({ voterId, partyName });
-    console.log('Vote details added to the database');
-    
-    res.status(200).json({ message: 'Vote submitted successfully' });
-  } catch (error) {
-    console.error('Error submitting vote:', error);
-    res.status(500).json({ message: 'Failed to submit vote' });
-  }
-});
-
-
-        app.post('/login', async (req, res) => {
-          try {
-              const { username, password } = req.body;
-              const dbName = 'Voting_portal';
-              const collectionName = 'Users';
-              const collection = client.db(dbName).collection(collectionName);
-              const user = await collection.findOne({ username, password });
-              
-              if (user) {
-                  // If user exists, set session/token to maintain authentication state
-                  // For simplicity, let's just send a success message for now
-                  res.status(200).json({ message: 'Login successful' });
-              } else {
-                  // If user doesn't exist or credentials are incorrect, send an error message
-                  res.status(401).json({ message: 'Invalid email or password' });
-              }
-          } catch (error) {
-              console.error('Error during login:', error);
-              res.status(500).json({ message: 'Login failed' });
-          }
-      });
-        
-app.post('/signup', async (req, res) => {
-    try {
-        const userData = req.body;
-        // Call the function to insert user data into the collection
-        await addUser(userData);
-        res.status(200).json({ message: 'User signed up successfully' });
-    } catch (error) {
-        if (error.message === 'Username or voter ID already exists') {
-            res.status(400).json({ message: 'Username or voter ID already exists' });
-        } else {
-            res.status(500).json({ message: 'Failed to sign up user' });
-        }
-    }
-});
-
-
-    } catch (err) {
-        console.error("Error occurred:", err);
-    }
-    
-}
-
-main();
-
-app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
-  connectToMongoDB();
-});
+insertDocuments();
