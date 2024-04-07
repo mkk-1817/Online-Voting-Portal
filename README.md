@@ -1,70 +1,73 @@
-# Getting Started with Create React App
+# Online Voting Portal
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Abstract:
 
-## Available Scripts
+The Online Voting Portal project aims to address accessibility, transparency, and convenience issues in voting systems by developing an online platform for voting. Utilizing modern web technologies, the system provides robust user authentication, secure and anonymous voting, and multi-factor authentication for enhanced security. This README provides an overview of the project's objectives, features, modules, technologies used, and future plans.
 
-In the project directory, you can run:
+## Problem Identification:
 
-### `npm start`
+### Accessibility:
+Many regions face low voter turnout due to accessibility issues. This project aims to provide a solution by allowing people to vote from anywhere with internet access, thereby increasing accessibility for all.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### Transparency and Trust:
+Ensuring the integrity of the voting process is essential for fostering trust in democratic systems. By incorporating cryptographic protocols and secure voting methods, this system aims to enhance transparency and trust in the voting process.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### Convenience:
+Traditional voting methods can be inconvenient for busy individuals or those unable to leave their homes. The Online Voting Portal offers a convenient solution by enabling users to cast their votes at their convenience using internet-enabled devices.
 
-### `npm test`
+## Software Requirements Specification (SRS) & Modules Formation:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### SRS:
+- User authentication and authorization
+- Multi-factor Authentication with OTP
+- Secure and anonymous voting
 
-### `npm run build`
+### Modules:
+- User Management Module
+- Voting Module
+- Home Module
+- About Module
+- Contact Module
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## GitHub Collaborative Development:
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+This project follows collaborative development practices using GitHub, including regular commits, pull requests, code reviews, and issue tracking.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Functionalities and Users of the System:
 
-### `npm run eject`
+### Functionalities:
+- Sign Up
+- Login
+- Voter Page
+- Contact Information
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### Users:
+- General Users
+- Admin (Not explicitly implemented)
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Concepts Used:
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### ReactJS:
+- Functional Components
+- State Management
+- Routing
+- Conditional Rendering
+- Event Handling
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+### Node.js and Express.js:
+- Server-Side Routing
+- Middleware
+- Error Handling
+- Database Interaction
+- Sending Emails
+- Security (not explicitly implemented in provided code)
 
-## Learn More
+## Cloud Deployment:
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+- Backend: [Online Voting Portal Backend](https://online-voting-portal.onrender.com/)
+- Frontend: [Online Voting Portal Frontend](https://online-voting-portal.netlify.app/)
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## Let's Connect!
+🌐 LinkedIn: https://www.linkedin.com/in/subramanian-s-ab94302a1/ & https://www.linkedin.com/in/karthik-krishna-m/
 
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+📧 Email: subramanian160104@gmail.com & karthikkrishna230104@gmail.com
